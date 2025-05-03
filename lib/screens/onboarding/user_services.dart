@@ -41,4 +41,13 @@ class UserServices {
     }
 
   }
+
+  // methode to check the user name is save the shared preferences
+  static Future<bool> checkUsername() async {
+
+    //create an instance fpr
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? userName = prefs.getString('userName');
+    return userName != null;
+  }
 }
