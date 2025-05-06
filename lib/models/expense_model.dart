@@ -42,4 +42,17 @@ class Expense {
     required this.time, 
     required this.description
     });
+
+    // convert the expense object to JSON object
+    Map < String , dynamic > toJSON () {
+      return {
+        'id' : id,
+        'title' : title,
+        'amount' : amount,
+        'category' : category.index,
+        'date' : date.toIso8601String(),
+        'time' : time.toIso8601String(),
+        'description' : description,
+      };
+    }
 }
