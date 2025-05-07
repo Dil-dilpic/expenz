@@ -62,6 +62,14 @@ class _MainScreenState extends State<MainScreen> {
    }); 
   }
 
+  //Function to remove a expense
+  void removeExpense(Expense expense) {
+    ExpenseServices().deleteExpense(expense.id, context);
+    setState(() {
+      expensesList.remove(expense);
+    });
+  }
+
 
 
   @override
@@ -76,8 +84,12 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     //screen list
     final List<Widget> pages = [     
+      
       HomeScreen(),
-      TransactionScreen(),
+      TransactionScreen(
+        expenseList: expensesList,
+        onDismissedExpense: removeExpense,
+      ),
       AddNewScreen(
         addExpens: addNewExpense,
         addIncome: addNewIncome,

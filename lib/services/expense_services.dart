@@ -63,4 +63,49 @@ class ExpenseServices {
 
     return loadedExpenses;
   }
+  // delete the expense from shared prference from the id
+  Future <void> deleteExpense (int id , BuildContext context) async {
+    try {
+      SharedPreferences pref = await SharedPreferences.getInstance();
+      List<String>? existingExpreses = pref.getStringList(_expenseKey);
+
+      //Convert the existing expenses to a list of expense object
+      List<Expense> existingExpenseObjects = [];
+      if (existingExpreses != null) {
+
+        existingExpenseObjects = existingExpreses.map((e) => Expense.fromJSON(json.decode(e))).toList();
+      }
+
+      //Remove the expense with the specified id from the list
+      existingExpenseObjects.removeWhere((expens) => expens.id == id);
+
+      //Convert the list of expense object back to lis of string
+      List<String> updatedExpenses = 
+          existingExpenseObjects.map((e) => json.encode(e.toJSON())).toList();
+
+       //Save the updated list of expenses to shared preferences
+       await pref.setStringList(_expenseKey, updatedExpenses);
+
+       //Show snackbar
+       if (context.mounted) {
+         ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("Expenses delete succesfully"),
+            duration: Duration(seconds: 2),
+            ),
+         );
+       }   
+    } catch (error) {
+      print(error.toString());
+
+      if (context.mounted) {
+         ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("Error deleting expenses"),
+            duration: Duration(seconds: 2),
+            ),
+         );
+       } 
+    }
+  }
 }

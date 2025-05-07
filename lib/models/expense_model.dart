@@ -16,6 +16,8 @@ enum Expensecategory {
   Expensecategory.shopping : "asset/images/bag.png",
   Expensecategory.subscriptions : "asset/images/bill.png",
 };
+
+//catergory colors
 final Map<Expensecategory, Color> expenseCategoriesColors = {
   Expensecategory.food : const Color.fromARGB(253, 206, 38, 9),
   Expensecategory.transport : const Color.fromARGB(253, 19, 197, 72),
@@ -65,7 +67,7 @@ class Expense {
         category: Expensecategory.values[json['category']], 
         date: DateTime.parse(json['date']), 
         time: DateTime.parse(json['time']), 
-        description: json['description']
+        description: json['description'],
         );
     }
 }
