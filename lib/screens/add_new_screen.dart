@@ -1,6 +1,7 @@
 import 'package:expenz/models/expense_model.dart';
 import 'package:expenz/models/income_model.dart';
 import 'package:expenz/services/expense_services.dart';
+import 'package:expenz/services/income_services.dart';
 import 'package:expenz/utils/colors.dart';
 import 'package:expenz/utils/constant.dart';
 import 'package:expenz/widget/custom_button.dart';
@@ -9,9 +10,11 @@ import 'package:intl/intl.dart';
 
 class AddNewScreen extends StatefulWidget {
   final Function(Expense) addExpens;
+  final Function(Income) addIncome;
   const AddNewScreen({
     super.key, 
-    required this.addExpens});
+    required this.addExpens, 
+    required this.addIncome});
 
   @override
   State<AddNewScreen> createState() => _AddNewScreenState();
@@ -377,6 +380,8 @@ class _AddNewScreenState extends State<AddNewScreen> {
                           GestureDetector(
                             onTap: () async {
                               // save the expense or the income data to shared preference
+                              if (_selectedMethode == 0 ) {
+                                //Adding expenses
                               List<Expense> loadedExpenses = await ExpenseServices().loadExpenses();
                               print(loadedExpenses.length);
 
@@ -395,6 +400,35 @@ class _AddNewScreenState extends State<AddNewScreen> {
 
                                 //add expense
                                 widget.addExpens(expense);
+
+                                //clear the fields
+                                _titleController.clear();
+                                _amountController.clear();
+                                _descriptionController.clear();
+                              } else {
+
+                                //load incomes
+                                List <Income> loadedIncome = await IncomeServices().loadIncomes();
+                                // Create the Income
+                                Income income = Income(
+                                  id: loadedIncome.length + 1, 
+                                  title: _titleController.text, 
+                                  amount: _amountController.text.isEmpty
+                                      ? 0
+                                      : double.parse(_amountController.text), 
+                                  category: _incomeCategory, 
+                                  date: _selecteddate, 
+                                  time: _selectedTime, 
+                                  description: _descriptionController.text,
+                                  );
+                                  //add income
+                                  widget.addIncome(income);
+                                  //clear the fields
+                                   _titleController.clear();
+                                   _amountController.clear();
+                                   _descriptionController.clear();
+                              }
+                             
                             },
                             child: CustomButton(
                               buttonName: "Add", 
