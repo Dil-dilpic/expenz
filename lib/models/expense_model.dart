@@ -55,4 +55,17 @@ class Expense {
         'description' : description,
       };
     }
+
+    //Create an expense object from a JSON object
+    factory Expense.fromJSON(Map<String, dynamic> json){
+      return Expense(
+        id: json['id'], 
+        title: json['title'], 
+        amount: json['amount'], 
+        category: Expensecategory.values[json['category']], 
+        date: DateTime.parse(json['date']), 
+        time: DateTime.parse(json['time']), 
+        description: json['description']
+        );
+    }
 }
