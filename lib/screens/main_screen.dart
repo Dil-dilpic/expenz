@@ -148,6 +148,7 @@ class _MainScreenState extends State<MainScreen> {
         incomeCategorytotals: calculateIncomeCatergories(),
       ),
       ProfileScreen(),
+     
     ];
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
